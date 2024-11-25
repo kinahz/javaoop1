@@ -1,0 +1,110 @@
+Класс Student
+Этот класс представляет модель данных студента. В нём определены три поля, конструктор, геттеры и метод для расчёта увеличения стипендии.
+
+Поля:
+
+name — имя студента (тип String), отвечает за хранение имени.
+currentScholarship — текущая стипендия (тип double), необходима для расчётов.
+newScholarship — новая стипендия (тип double), также используется для вычисления.
+Конструктор:
+
+java
+Copy code
+public Student(String name, double currentScholarship, double newScholarship) {
+    this.name = name;
+    this.currentScholarship = currentScholarship;
+    this.newScholarship = newScholarship;
+}
+Этот конструктор позволяет создать объект, передав в него имя, текущую и новую стипендии.
+
+Методы:
+
+getName: возвращает имя студента.
+java
+Copy code
+public String getName() {
+    return name;
+}
+getCurrentScholarship: возвращает текущую стипендию.
+java
+Copy code
+public double getCurrentScholarship() {
+    return currentScholarship;
+}
+getNewScholarship: возвращает новую стипендию.
+java
+Copy code
+public double getNewScholarship() {
+    return newScholarship;
+}
+getScholarshipIncrease: вычисляет разницу между новой и текущей стипендиями.
+java
+Copy code
+public double getScholarshipIncrease() {
+    return newScholarship - currentScholarship;
+}
+Метод облегчает расчёт увеличения стипендии, делая код более понятным.
+
+Метод readStudentsFromExcel
+Этот метод отвечает за чтение данных из Excel-файла и создание объектов Student. Он использует библиотеку Apache POI.
+
+java
+Copy code
+public static List<Student> readStudentsFromExcel(String filePath) {
+    List<Student> students = new ArrayList<>();
+    
+    try (FileInputStream fis = new FileInputStream(new File(filePath));
+         Workbook workbook = new XSSFWorkbook(fis)) {
+         
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) continue; // Пропускаю заголовок
+            
+            String name = row.getCell(0).getStringCellValue();
+            double currentScholarship = row.getCell(1).getNumericCellValue();
+            double newScholarship = row.getCell(2).getNumericCellValue();
+            
+            Student student = new Student(name, currentScholarship, newScholarship);
+            students.add(student);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    
+    return students;
+}
+Этапы работы метода:
+
+Открытие файла с использованием FileInputStream.
+Доступ к первому листу Excel через workbook.getSheetAt(0).
+Чтение строк, пропуская первую (заголовок).
+Чтение данных из ячеек и создание объекта Student.
+Закрытие ресурсов с использованием try-with-resources.
+Метод возвращает список объектов Student, заполненный данными из Excel.
+
+Основной метод main
+Этот метод выполняет основной процесс программы:
+
+java
+Copy code
+public static void main(String[] args) {
+    String filePath = "students.xlsx"; // Путь к файлу
+    List<Student> students = readStudentsFromExcel(filePath); // Чтение файла
+    
+    for (Student student : students) {
+        System.out.println("Name: " + student.getName());
+        System.out.println("Current Scholarship: " + student.getCurrentScholarship());
+        System.out.println("New Scholarship: " + student.getNewScholarship());
+        System.out.println("Scholarship Increase: " + student.getScholarshipIncrease());
+        System.out.println("--------------------------");
+    }
+}
+Процесс работы:
+
+Чтение данных из Excel с помощью метода readStudentsFromExcel.
+Вывод информации о каждом студенте:
+Имя студента.
+Текущая стипендия.
+Новая стипендия.
+Разница между новой и текущей стипендией.
