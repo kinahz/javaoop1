@@ -10,15 +10,12 @@ public class Client {
              ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
              Scanner scanner = new Scanner(System.in)) {
 
-            System.out.println("Connected to server. Enter 'Q' to quit.");
 
             while (true) {
-                System.out.println("Enter shape type (Circle/Rectangle): ");
                 String shapeType = scanner.nextLine();
 
                 if (shapeType.equalsIgnoreCase("Q")) {
                     out.writeObject("Q");
-                    System.out.println("Closing connection...");
                     break;
                 }
 
@@ -32,16 +29,14 @@ public class Client {
                         break;
 
                     case "rectangle":
-                        System.out.println("Enter length: ");
                         double length = scanner.nextDouble();
-                        System.out.println("Enter width: ");
                         double width = scanner.nextDouble();
                         scanner.nextLine(); // Consume the newline character
                         shape = new Rectangle(length, width);
                         break;
 
                     default:
-                        System.out.println("Invalid shape type. Try again.");
+                        System.out.println("Eror");
                         continue;
                 }
 
@@ -51,7 +46,7 @@ public class Client {
                 if (response instanceof Double) {
                     System.out.println("Server calculated area: " + response);
                 } else {
-                    System.out.println("Invalid response from server.");
+                    System.out.println("Eror");
                 }
             }
         } catch (Exception e) {
