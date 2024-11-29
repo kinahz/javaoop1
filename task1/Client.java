@@ -24,14 +24,14 @@ public class Client {
                     case "circle":
                         System.out.println("Enter radius: ");
                         double radius = scanner.nextDouble();
-                        scanner.nextLine(); // Consume the newline character
+                        scanner.nextLine(); 
                         shape = new Circle(radius);
                         break;
 
                     case "rectangle":
                         double length = scanner.nextDouble();
                         double width = scanner.nextDouble();
-                        scanner.nextLine(); // Consume the newline character
+                        scanner.nextLine(); 
                         shape = new Rectangle(length, width);
                         break;
 
